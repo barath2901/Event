@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Event</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body style="background-color: var(--bg-surface);">
+
+<nav class="navbar">
+    <div class="logo">Admin Portal</div>
+    <a href="/admin" style="color: var(--text-muted); text-decoration: none;">← Cancel</a>
+</nav>
+
+<div class="container" style="max-width: 800px; margin-top: 3rem; margin-bottom: 3rem;">
+    <div class="card">
+        <h2 style="margin-bottom: 1.5rem;">Edit Event</h2>
+
+        <form th:action="@{/admin/update/{id}(id=${event.id})}" th:object="${event}" method="post" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+            <div style="grid-column: span 2;">
+                <label>Event Title</label>
+                <input type="text" th:field="*{title}" required>
+            </div>
+
+            <div style="grid-column: span 2;">
+                <label>Description</label>
+                <textarea th:field="*{description}" required style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;"></textarea>
+            </div>
+
+            <div>
+                <label>Date</label>
+                <input type="date" th:field="*{eventDate}" required>
+            </div>
+
+            <div>
+                <label>Time</label>
+                <input type="time" th:field="*{eventTime}" required>
+            </div>
+
+            <div>
+                <label>Location</label>
+                <input type="text" th:field="*{location}" required>
+            </div>
+
+            <div>
+                <label>Total Spots</label>
+                <input type="number" th:field="*{totalSpots}" required>
+            </div>
+
+            <div>
+                <label>Deadline</label>
+                <input type="datetime-local" th:field="*{regDeadline}" required>
+            </div>
+
+            <div>
+                <label>Coordinators</label>
+                <input type="text" th:field="*{coordinators}" required>
+            </div>
+
+            <div style="grid-column: span 2;">
+                <label>Status</label>
+                <select th:field="*{status}" style="width: 100%; padding: 10px; border-radius: 8px;">
+                    <option value="OPEN">OPEN</option>
+                    <option value="CLOSED">CLOSED</option>
+                </select>
+            </div>
+
+            <div style="grid-column: span 2;">
+                <button type="submit" class="btn-primary" style="width: 100%;">Update Event</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

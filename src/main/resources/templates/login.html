@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #0ea5e9, #14b8a6);">
+
+<div class="card" style="width: 100%; max-width: 400px; padding: 2.5rem; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="width: 60px; height: 60px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+            <i class="fas fa-lock" style="color: #0ea5e9; font-size: 1.5rem;"></i>
+        </div>
+        <h2 style="font-size: 1.5rem; color: #0f172a;">Admin Access</h2>
+        <p style="color: #64748b;">Enter credentials to manage events</p>
+    </div>
+
+    <div th:if="${error}" style="background: #fee2e2; color: #991b1b; padding: 10px; border-radius: 8px; font-size: 0.9rem; text-align: center; margin-bottom: 20px;">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form action="/login" method="post">
+        <div class="form-group">
+            <label style="font-size: 0.9rem;">Username</label>
+            <input type="text" name="username" placeholder="admin" required
+                   style="padding: 12px; border-radius: 10px; background: #f8fafc;">
+        </div>
+
+        <div class="form-group">
+            <label style="font-size: 0.9rem;">Password</label>
+            <input type="password" name="password" placeholder="••••••••" required
+                   style="padding: 12px; border-radius: 10px; background: #f8fafc;">
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 10px; padding: 12px;">Sign In</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">← Back to Home</a>
+    </div>
+</div>
+
+</body>
+</html>

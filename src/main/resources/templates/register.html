@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register | AAA College</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body { background-color: #f8fafc; }
+        .main-wrapper {
+            max-width: 950px; margin: 4rem auto; padding: 0 20px;
+            display: flex; justify-content: center; align-items: flex-start;
+            gap: 50px; flex-wrap: wrap;
+        }
+        .details-section { flex: 1; min-width: 300px; max-width: 500px; }
+        .form-card {
+            width: 400px; background: white; padding: 2rem;
+            border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            position: sticky; top: 20px;
+        }
+        @media (max-width: 850px) {
+            .main-wrapper { flex-direction: column; align-items: center; }
+            .form-card { width: 100%; }
+        }
+        .detail-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .icon-box {
+            width: 45px; height: 45px; background: #e0f2fe; color: #0284c7;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+        .detail-text h4 { margin: 0; font-size: 0.85rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .detail-text p { margin: 0; font-size: 1.05rem; color: #0f172a; font-weight: 700; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #334155; font-size: 0.9rem; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px; border-radius: 8px;
+            border: 1px solid #cbd5e1; background: #f8fafc;
+            font-size: 0.95rem; outline: none; transition: 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #0ea5e9; box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1); background: white;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo"><i class="fas fa-code"></i> CSE Events</div>
+    <div class="nav-links">
+        <a th:href="@{/}" style="display: flex; align-items: center; gap: 8px; font-weight: 600;">
+            <i class="fas fa-arrow-left"></i> Back to Events
+        </a>
+    </div>
+</nav>
+
+<div class="main-wrapper">
+
+    <div class="details-section">
+        <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;"
+             th:styleappend="${#strings.equals(event.status, 'CLOSED')} ? 'justify-content: center;' : ''">
+            <span class="badge badge-open" style="background: #eff6ff; color: #1d4ed8; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">EVENT</span>
+            <span th:if="${event.status == 'OPEN'}" style="color: #16a34a; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-check-circle"></i> Registration Open
+                </span>
+            <span th:if="${event.status == 'CLOSED'}" style="color: #dc2626; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-times-circle"></i> Registration Closed
+                </span>
+        </div>
+
+        <h1 th:text="${event.title}" style="font-size: 2.5rem; line-height: 1.1; margin-bottom: 2rem; color: #0f172a;">Event Title</h1>
+
+        <div class="detail-item">
+            <div class="icon-box"><i class="far fa-calendar-alt"></i></div>
+            <div class="detail-text">
+                <h4>Date</h4>
+                <p th:text="${#temporals.format(event.eventDate, 'EEEE, MMMM d, yyyy')}">Date</p>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="icon-box"><i class="far fa-clock"></i></div>
+            <div class="detail-text">
+                <h4>Time</h4>
+                <p th:text="${#temporals.format(event.eventTime, 'h:mm a')}">Time</p>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="detail-text">
+                <h4>Venue</h4>
+                <p th:text="${event.location}">Location</p>
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div class="icon-box"><i class="fas fa-user-tie"></i></div>
+            <div class="detail-text">
+                <h4>Coordinators</h4>
+                <p th:text="${event.coordinators}">Names</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; padding: 15px; background: #fff1f2; border-left: 4px solid #e11d48; border-radius: 6px;">
+            <p style="margin: 0; color: #be123c; font-size: 0.9rem;">
+                <i class="fas fa-exclamation-triangle"></i>
+                Deadline: <strong th:text="${#temporals.format(event.regDeadline, 'dd MMM yyyy, h:mm a')}">Date</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <h2 style="font-size: 1.4rem; margin-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+            Complete Registration
+        </h2>
+
+        <form id="regForm" th:action="@{/register/{eventId}(eventId=${event.id})}" th:object="${participant}" method="post" onsubmit="return validateForm()">
+
+            <div class="form-group">
+                <label>Full Name <span style="color: red">*</span></label>
+                <input type="text" th:field="*{name}" placeholder="Enter full name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Register Number <span style="color: red">*</span></label>
+                <input type="text" th:field="*{regNo}" id="regNo" placeholder="e.g. 917721..." required>
+                <small id="regError" style="color: red; display: none;">Invalid format</small>
+            </div>
+
+            <div class="form-group">
+                <label>Department <span style="color: red">*</span></label>
+                <select th:field="*{dept}" required>
+                    <option value="CSE" selected>Computer Science & Engg.</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Year <span style="color: red">*</span></label>
+                <select th:field="*{year}" required>
+                    <option value="" disabled selected>Select Year</option>
+                    <option value="II">II Year</option>
+                    <option value="III">III Year</option>
+                    <option value="IV">IV Year</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number <span style="color: red">*</span></label>
+                <input type="text" th:field="*{phoneNumber}" id="phoneNumber" placeholder="Enter 10-digit mobile no" required>
+                <small id="phoneError" style="color: red; display: none;">Invalid phone number (must be 10 digits)</small>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px; padding: 12px; font-size: 1rem; border-radius: 8px;">
+                Confirm Registration
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
