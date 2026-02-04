@@ -11,7 +11,7 @@ RUN mvn clean package -DskipTests
 
 # --- STAGE 2: RUN ---
 # Use a lightweight Java 21 image for the final application
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 # Copy the built JAR file from the previous stage
